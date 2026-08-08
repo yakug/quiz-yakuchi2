@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>病態薬物治療学2 </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ニックネーム入力画面 -->
+    <div id="start-screen" class="screen">
+        <h1>病態薬物治療学2</h1>
+        <p id="user-level">Lv.1</p>
+        <p>ニックネームを入力してスタート</p>
+        <input type="text" id="username" placeholder="ニックネーム">
+        <button id="start-btn">スタート</button>
+    </div>
+
+    <!-- クイズ画面 -->
+    <div id="quiz-screen" class="screen hidden">
+        <h2 id="question-number">1 / 10</h2>
+        <p id="question-text"></p>
+
+        <!-- 敵 -->
+        <div id="enemy">
+            <div class="horn left"></div>
+            <div class="horn right"></div>
+            <div id="enemy-mouth"></div>
+        </div>
+
+        <div id="hit-effect">
+           <div class="spike"></div>
+           <div class="spike"></div>
+           <div class="spike"></div>
+           <div class="spike"></div>
+           <div class="spike"></div>
+           <div class="spike"></div>
+           <div class="spike"></div>
+           <div class="spike"></div>
+        </div>
+
+
+        <div id="miss-effect"></div>
+        <div id="levelup-effect">LEVEL UP!</div>
+
+        <audio id="hit-sound" src="hit.mp3"></audio>
+        <audio id="miss-sound" src="miss.mp3"></audio>
+        <audio id="levelup-sound" src="levelup.mp3"></audio>
+
+        <div id="choices">
+            <button class="choice-btn" data-answer="true">○</button>
+            <button class="choice-btn" data-answer="false">×</button>
+        </div>
+    </div>
+
+    <!-- 結果画面 -->
+    <div id="result-screen" class="screen hidden">
+        <h2>結果</h2>
+        <p id="score-text"></p>
+
+        <h3>解説</h3>
+        <div id="explanation-list"></div>
+
+        <button id="restart-btn">もう一度</button>
+    </div>
+
+   
+    <script src="script.js"></script>
+</body>
+</html>

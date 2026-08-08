@@ -1,0 +1,302 @@
+/* 全体 */
+body {
+    font-family: "Rounded Mplus 1c", "Hiragino Maru Gothic ProN", sans-serif;
+    background: #fdf7ff;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+    color: #444;
+}
+
+/* タイトル */
+h1 {
+    font-size: 28px;
+    color: #ff8ac0;
+    margin-bottom: 20px;
+}
+
+/* クイズ全体のカード */
+#quiz-container {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(255, 150, 200, 0.2);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* 問題番号 */
+#question-number {
+    font-size: 20px;
+    color: #ff8ac0;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* 問題文 */
+#question-text {
+    font-size: 24px;
+    line-height: 1.6;
+    font-weight: 600;
+    margin: 20px 0;
+}
+
+/* ○×ボタン */
+.choice-btn {
+    font-size: 26px;
+    padding: 18px 32px;
+    border-radius: 40px;
+    width: 140px;
+    height: 70px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+    transition: 0.15s ease-out;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transform: scale(1);
+
+    /* ★ ボタンを前面に出す */
+    position: relative;
+    z-index: 10;
+}
+
+/* ○ボタン */
+.choice-btn[data-answer="true"] {
+    background: #ff9ad9;
+    color: white;
+}
+
+/* ×ボタン */
+.choice-btn[data-answer="false"] {
+    background: #a8f0d5;
+    color: #444;
+}
+
+/* ホバー */
+.choice-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+/* クリック */
+.choice-btn:active {
+    transform: scale(0.88);
+    transition: 0.08s;
+}
+
+/* 結果画面 */
+#result {
+    font-size: 22px;
+    margin-top: 20px;
+    color: #ff8ac0;
+}
+
+/* 解説カード */
+.explanation-item {
+    text-align: left;
+    margin: 10px 0;
+    padding: 10px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(255, 150, 200, 0.15);
+}
+
+.exp {
+    color: #666;
+    font-size: 14px;
+}
+
+/* 画面切り替え */
+.hidden {
+    display: none;
+}
+
+.ranking-item {
+    background: #fff;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(255, 150, 200, 0.15);
+    font-size: 18px;
+}
+
+/* 敵本体 */
+#enemy {
+    width: 140px;
+    height: 140px;
+    background: #333;
+    border-radius: 20px;
+    margin: 0 auto 20px;
+    position: relative;
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+
+    /* ★ 敵を後ろに下げる */
+    z-index: 1;
+}
+
+/* 赤い目 */
+#enemy::before, #enemy::after {
+    content: "";
+    position: absolute;
+    top: 40px;
+    width: 25px;
+    height: 25px;
+    background: red;
+    border-radius: 50%;
+    box-shadow: 0 0 12px red;
+}
+#enemy::before { left: 30px; }
+#enemy::after { right: 30px; }
+
+/* 角 */
+#enemy .horn {
+    position: absolute;
+    top: -20px;
+    width: 45px;
+    height: 45px;
+    background: #333;
+    transform: rotate(45deg);
+}
+#enemy .horn.left { left: -10px; }
+#enemy .horn.right { right: -10px; }
+
+/* 口 */
+#enemy-mouth {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    width: 70px;
+    height: 25px;
+    background: white;
+    transform: translateX(-50%);
+    border-radius: 0 0 20px 20px;
+}
+
+/* 牙 */
+#enemy-mouth::before, #enemy-mouth::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 12px 6px 0 6px;
+    border-color: white transparent transparent transparent;
+}
+#enemy-mouth::before { left: 12px; }
+#enemy-mouth::after { right: 12px; }
+
+/* 攻撃エフェクト */
+/* ギザギザ衝撃波（小さめ・安全版） */
+#hit-effect {
+    position: absolute;
+    top: 25%; /* ← ここが最適位置（敵の少し上） */
+    left: 50%;
+    width: 80px;
+    height: 80px;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+
+    pointer-events: none; /* ← 絶対にクリックを邪魔しない */
+    z-index: 1;           /* ← ボタンより後ろ */
+}
+
+#hit-effect .spike {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 4px 18px 4px; /* ← 小さめのとげ */
+    border-color: transparent transparent rgba(255, 80, 120, 0.9) transparent;
+    transform-origin: bottom center;
+    pointer-events: none; /* ← spike も完全無効化 */
+}
+
+/* 8方向に配置 */
+#hit-effect .spike:nth-child(1) { transform: rotate(0deg); }
+#hit-effect .spike:nth-child(2) { transform: rotate(45deg); }
+#hit-effect .spike:nth-child(3) { transform: rotate(90deg); }
+#hit-effect .spike:nth-child(4) { transform: rotate(135deg); }
+#hit-effect .spike:nth-child(5) { transform: rotate(180deg); }
+#hit-effect .spike:nth-child(6) { transform: rotate(225deg); }
+#hit-effect .spike:nth-child(7) { transform: rotate(270deg); }
+#hit-effect .spike:nth-child(8) { transform: rotate(315deg); }
+
+.hit-animate {
+    animation: spikeBurstSmall 0.45s ease-out forwards;
+}
+
+@keyframes spikeBurstSmall {
+    0% {
+        transform: translate(-50%, -50%) scale(0.2);
+        opacity: 1;
+    }
+    60% {
+        transform: translate(-50%, -50%) scale(1.0); /* ← 小さめ */
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.3);
+        opacity: 0;
+    }
+}
+
+
+/* 不正解エフェクト */
+#miss-effect {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 0, 0, 0.4);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    pointer-events: none;
+    opacity: 0;
+}
+.miss-animate {
+    animation: missEffect 0.4s ease-out forwards;
+}
+@keyframes missEffect {
+    0% { transform: translate(-50%, -50%) scale(0.2); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+}
+
+/* 敵が消える */
+.enemy-die {
+    opacity: 0;
+    transform: scale(0.5);
+    pointer-events: none;
+}
+
+/* レベルアップ */
+#levelup-effect {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    font-weight: bold;
+    color: gold;
+    text-shadow: 0 0 10px orange;
+    opacity: 0;
+    pointer-events: none;
+}
+.levelup-animate {
+    animation: levelUp 1s ease-out forwards;
+}
+@keyframes levelUp {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+
+#quiz-screen {
+    position: relative;
+}
+
+
